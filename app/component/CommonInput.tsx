@@ -126,11 +126,22 @@ const samplingMethodOptions = [
 ];
 
 export const CommonInput = ({ mode }: { mode: number }) => {
-  const settings =
-    mode == 0
-      ? useSelector((state) => state.txt2img.settings)
-      : useSelector((state) => state.img2img.settings);
-  const setSettings = mode == 0 ? setTxt2imgSettings : setImg2imgSettings;
+  const getSettings = (state, mode) => {
+    if (mode === 0) {
+      return state.txt2img.settings;
+    } else {
+      return state.img2img.settings;
+    }
+  }
+
+// 获取 setSettings 的函数  
+  const getSetSettings = (mode) => {
+    if (mode === 0) {
+      return setTxt2imgSettings; 
+    } else {
+      return setImg2imgSettings;
+    }
+  }
   const dispatch = useDispatch();
 
   const [samplingMethod, setSamplingMethod] = useState<string>("Eular a");

@@ -146,13 +146,13 @@ export const CommonInput = ({ mode }: { mode: number }) => {
   const [seeds, setSeeds] = useState<number>(-1);
 
   useEffect(() => {
-    if (settings.height && settings.height != height) {
+    if (settings.height && settings.height !== height) {
       setHeight(settings.height);
     }
-    if (settings.width && settings.width != width) {
+    if (settings.width && settings.width !== width) {
       setWidth(settings.width);
     }
-  }, [settings]);
+  }, [settings, height, width]);
 
   return (
     <div>

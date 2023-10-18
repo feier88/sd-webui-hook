@@ -65,11 +65,26 @@ const models = [
 
 export const ControlNetInput = ({ mode }: { mode: number }) => {
   const dispatch = useDispatch();
-  const settings =
-    mode == 0
-      ? useSelector((state) => state.txt2img.settings)
-      : useSelector((state) => state.img2img.settings);
-  const setSettings = mode == 0 ? setTxt2imgSettings : setImg2imgSettings;
+
+
+  const getSettings = (state, mode) => {
+    if(mode === 0) {
+      return state.txt2img.settings;
+    } else {
+      return state.img2img.settings;
+    }
+  }
+
+  const settings = useSelector(state => getSettings(state, mode))
+  const getSetSettings = (mode) => {
+    if(mode === 0) {
+      return setTxt2imgSettings;
+    } else {
+      return setImg2imgSettings; 
+    }
+  }
+
+  const setSettings = getSetSettings(mode);
   const [isEnabled, setIsEnabled] = useState(false);
   const [moduleSelected, setModuleSelected] = useState("openpose_face");
   const [modelSelected, setModelSelected] = useState(
@@ -105,7 +120,7 @@ export const ControlNetInput = ({ mode }: { mode: number }) => {
         })
       );
     }
-  }, [isEnabled, moduleSelected, modelSelected, image]);
+  }, [isEnabled, moduleSelected, modelSelected, image, dispatch, settings, setSettings]);
 
   useEffect(() => {
     if (imageSize.width > 0 && imageSize.height > 0) {
@@ -118,7 +133,7 @@ export const ControlNetInput = ({ mode }: { mode: number }) => {
         })
       );
     }
-  }, [imageSize]);
+  }, [imageSize,dispatch, settings, setSettings]);
 
   return (
     <div>

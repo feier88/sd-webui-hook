@@ -142,6 +142,11 @@ export const CommonInput = ({ mode }: { mode: number }) => {
       return setImg2imgSettings;
     }
   }
+  const settings = useSelector(state => getSettings(state, mode)); 
+  
+  // 调用获取 setSettings 的函数
+  const setSettings = getSetSettings(mode);
+  
   const dispatch = useDispatch();
 
   const [samplingMethod, setSamplingMethod] = useState<string>("Eular a");

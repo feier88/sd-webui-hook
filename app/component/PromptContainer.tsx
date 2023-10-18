@@ -15,11 +15,25 @@ export const PromptContainer = (props: PromptContainerProps) => {
   const { mode, prompt_default, negative_prompt_default, display } = props;
   const [prompt, setPrompt] = useState("");
   const [negative_prompt, setNegativePrompt] = useState("");
-  const settings =
-    mode == 0
-      ? useSelector((state) => state.txt2img.settings)
-      : useSelector((state) => state.img2img.settings);
-  const setSettings = mode == 0 ? setTxt2imgSettings : setImg2imgSettings;
+  const getSettings = (state, mode) => {
+    if(mode === 0) {
+      return state.txt2img.settings; 
+    } else {
+      return state.img2img.settings;
+    }
+  }
+
+  const settings = useSelector(state => getSettings(state, mode));
+  const getSetSettings = (mode) => {
+    if(mode === 0) {
+      return setTxt2imgSettings;
+    } else {
+      return setImg2imgSettings;
+    } 
+  }
+
+  const setSettings = getSetSettings(mode);
+  
   const dispatch = useDispatch();
 
   const handleChange = (e: any) => {
@@ -51,7 +65,7 @@ export const PromptContainer = (props: PromptContainerProps) => {
         negative_prompt: negative_prompt_default,
       })
     );
-  }, []);
+  }, [dispatch, prompt, negativePrompt, setSettings, settings]);
 
   return (
     <div>
